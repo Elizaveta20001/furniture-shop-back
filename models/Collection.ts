@@ -1,5 +1,15 @@
-import {Schema, model, Types} from 'mongoose';
-
+import {Schema, model, Types, Document} from 'mongoose';
+interface CollectionInterface extends Document{
+    title: string;
+    items: CollectionItemInterface[]
+}
+interface CollectionItemInterface extends Document{
+    id: number,
+    title: string,
+    url: string,
+    description: string,
+    price: number
+}
 const CollectionSchema: Schema = new Schema({
     title: {
         type: String,
@@ -29,4 +39,4 @@ const CollectionSchema: Schema = new Schema({
     }]
 
 })
-export default model("Collection",CollectionSchema);
+export default model<CollectionInterface>("Collection",CollectionSchema);
