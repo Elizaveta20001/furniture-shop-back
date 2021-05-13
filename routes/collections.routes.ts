@@ -32,21 +32,6 @@ router.get(
         }
     }
 )
-
-router.get(
-    '/armchairs',
-    async (request:Request,response:Response) =>{
-        try{
-            const query = {title : "Armchairs"}
-            const tables = await Collection.findOne(query)
-            response.json({
-                data: tables
-            })
-        }catch (error) {
-            response.status(500).send(error)
-        }
-    }
-)
 router.get(
     '/sofas',
     async (request:Request,response:Response) =>{
