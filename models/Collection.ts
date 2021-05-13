@@ -29,4 +29,4 @@ const CollectionSchema: Schema = new Schema({
     }]
 
 })
-export default CollectionSchema;
+export default model("Collection",CollectionSchema);
