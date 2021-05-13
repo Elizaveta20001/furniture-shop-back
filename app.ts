@@ -2,6 +2,7 @@ import express, { json, Application } from 'express';
 import config from 'config';
 import mongoose from 'mongoose';
 import auth_routes from './routes/auth.routes';
+import collection_routes from "./routes/collections.routes";
 
 
 const app: Application = express();
@@ -9,6 +10,8 @@ const app: Application = express();
 app.use(json());
 
 app.use('/api/auth', auth_routes);
+app.use('/api/collections/',collection_routes)
+
 
 const PORT: number = config.get('port') || 5000;
 const MONGO_URI: string = config.get('mongoUri');
