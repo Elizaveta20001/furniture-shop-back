@@ -44,4 +44,4 @@ const CatalogSchema: Schema = new Schema({
 });
 
 
-export default model<CatalogInterface | null>('Collection', CatalogSchema);
+export default model<CatalogInterface>('Collection', CatalogSchema);

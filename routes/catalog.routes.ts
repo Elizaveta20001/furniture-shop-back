@@ -1,25 +1,25 @@
 import {Router} from 'express';
 import { templateHandler } from '../helpers/templateHandler';
-import Collection from '../models/Catalog';
+import Catalog from '../models/Catalog';
 
 
 const router = Router();
 
 router.get(
     '/armchairs',
-    templateHandler('Armchairs', Collection)
+    templateHandler('Armchairs', Catalog)
 );
 router.get(
     '/tables',
-    templateHandler('Tables', Collection)
+    templateHandler('Tables', Catalog)
 );
 router.get(
     '/sofas',
-    templateHandler("Sofas", Collection)
+    templateHandler("Sofas", Catalog)
 );
 router.get(
     '/beds',
-    templateHandler("Beds", Collection)
+    templateHandler("Beds", Catalog)
 );
 
 
