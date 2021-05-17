@@ -7,7 +7,11 @@ const templateHandler = (collectionName: string) => async (request:Request,respo
         const query = {title : collectionName}
         const armchairs = await Collection.findOne(query)
         response.json(
-            armchairs ? {items: armchairs.items} : {}
+            armchairs ? {
+                items: armchairs.items,
+                title: armchairs.title
+            }
+            : {}
         )
     }catch (error) {
         response.status(500).send(error)
