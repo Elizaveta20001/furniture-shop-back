@@ -17,6 +17,7 @@ const router = Router();
 
 const JWT_SECRET: any = config.get('jwtSecret');
 
+
 // '/api/auth/register'
 router.post(
     '/register', 
