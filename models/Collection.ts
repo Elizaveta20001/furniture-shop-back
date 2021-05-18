@@ -1,20 +1,20 @@
 import {Schema, model, Document} from 'mongoose';
 
 
-interface CatalogInterface extends Document{
-    title: string;
-    items: CatalogItemInterface[]
+interface CollectionInterface extends Document{
+    title: string,
+    items: CollectionItemInterface[],
 };
 
-interface CatalogItemInterface extends Document{
-    id: number,
+interface CollectionItemInterface extends Document{
+    id: number;
     title: string,
     url: string,
     description: string,
     price: number
 };
 
-const CatalogSchema: Schema = new Schema({
+const CollectionSchema: Schema = new Schema({
     title: {
         type: String,
         required: true
@@ -44,4 +44,4 @@ const CatalogSchema: Schema = new Schema({
 });
 
 
-export default model<CatalogInterface>('Collection', CatalogSchema);
+export default model<CollectionInterface>('Collection', CollectionSchema);

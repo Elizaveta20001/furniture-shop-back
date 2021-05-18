@@ -3,6 +3,7 @@ import config from 'config';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import auth_routes from './routes/auth.routes';
+import collection_routes from './routes/collection.routes';
 import catalog_routes from './routes/catalog.routes';
 
 
@@ -15,7 +16,8 @@ app.use(bodyParser.json());
 app.use(json());
 
 app.use('/api/auth', auth_routes);
-app.use('/api/catalog',catalog_routes);
+app.use('/api/catalog', catalog_routes);
+app.use('/api/catalog/collections',collection_routes);
 
 
 const PORT: number = config.get('port') || 5000;

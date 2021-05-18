@@ -1,26 +1,27 @@
 import {Router} from 'express';
-import { templateHandler } from '../helpers/templateHandler';
-import Catalog from '../models/Catalog';
+import Collection from '../models/Collection';
+import {Request,Response} from 'express';
 
 
 const router = Router();
 
 router.get(
-    '/armchairs',
-    templateHandler('Armchairs', Catalog)
+    '/',
+    async (request:Request, response:Response) =>{
+        try{
+            const collection = await Collection.find()
+            response.json(
+                collection ? {
+                    titles: collection.map(elem => elem.title),
+                    urls: collection.map(elem => elem.items[0].url)
+                } : {}
+            )
+        }catch (error) {
+            response.status(500).send(error)
+        }
+    }
 );
-router.get(
-    '/tables',
-    templateHandler('Tables', Catalog)
-);
-router.get(
-    '/sofas',
-    templateHandler("Sofas", Catalog)
-);
-router.get(
-    '/beds',
-    templateHandler("Beds", Catalog)
-);
+
 
 
 export default router;
