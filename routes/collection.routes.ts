@@ -1,5 +1,7 @@
 import {Router} from 'express';
-import {templateCollectionItemHandler, templateHandler} from '../helpers/templateHandler';
+
+import {templateHandler} from '../helpers/templateHandler';
+import {templateCollectionItemHandler} from "../helpers/templateCollectionItemHandler";
 import Collection from '../models/Collection';
 
 
