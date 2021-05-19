@@ -1,9 +1,9 @@
 import {Schema, model, Types, Document} from 'mongoose';
-interface CollectionInterface extends Document{
+export interface CollectionInterface extends Document{
     title: string;
     items: CollectionItemInterface[]
 }
-interface CollectionItemInterface extends Document{
+export interface CollectionItemInterface extends Document{
     id: number,
     title: string,
     url: string,
