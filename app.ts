@@ -1,9 +1,10 @@
 import express, { json, Application } from 'express';
 import config from 'config';
 import mongoose from 'mongoose';
-import bodyParser from "body-parser";
+import bodyParser from 'body-parser';
 import auth_routes from './routes/auth.routes';
-import collection_routes from "./routes/collections.routes";
+import collection_routes from './routes/collections.routes';
+import searchResult_routes from './routes/serachResult.routes'
 
 
 const app: Application = express();
@@ -15,7 +16,8 @@ app.use(bodyParser.json());
 app.use(json());
 
 app.use('/api/auth', auth_routes);
-app.use('/api',collection_routes)
+app.use('/api',collection_routes);
+app.use('/api/search', searchResult_routes)
 
 
 const PORT: number = config.get('port') || 5000;
