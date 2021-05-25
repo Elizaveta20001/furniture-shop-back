@@ -2,5 +2,6 @@
     "port": 5000,
     "jwtSecret": "789",
     "mongoUri": "mongodb+srv://mikita:123@cluster0.frvm0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    "baseUrl": "http://localhost:5000"
+    "baseUrl": "http://localhost:5000",
+    "apiKey": "sk_test_51IuwMwCxpYbk6oLaNaUJewL2YVqQPkim5tpDLnmIv1JAQcxvYljqhqeCqbDizMYpn3fl7wricC4nNKMAlr4CbQul00LyHnp4Oe"
 }
