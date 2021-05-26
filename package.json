@@ -20,8 +20,10 @@
     "express-validator": "^6.10.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
+    "stripe": "^8.149.0",
     "ts-node-dev": "^1.1.6",
-    "typescript-deno-plugin": "^1.31.0"
+    "typescript-deno-plugin": "^1.31.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
