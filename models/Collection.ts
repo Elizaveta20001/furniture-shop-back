@@ -21,11 +21,11 @@ const CollectionSchema: Schema = new Schema({
         required: true
     },
     items: [{
-        id : {
+        id: {
             type: Number,
             required: true
         },
-        title:{
+        title: {
             type: String,
             required: true
         },
@@ -37,12 +37,16 @@ const CollectionSchema: Schema = new Schema({
             type: String,
             required: true
         },
-        url : {
+        url: {
             type: String,
             required: true
         },
-        comments:[{
-            email : {
+        collectionName: {
+            type: String,
+            required: false
+        },
+        comments: [{
+            email: {
                 type: String,
                 required: true
             },
@@ -58,11 +62,7 @@ const CollectionSchema: Schema = new Schema({
                 type: Types.ObjectId,
                 required: true
             }
-        collectionName : {
-            type: String,
-            required: false
-        }
-        ]
+        }]
     }]
 });
 
