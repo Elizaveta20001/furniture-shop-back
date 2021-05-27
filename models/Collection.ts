@@ -11,7 +11,8 @@ interface CollectionItemInterface extends Document{
     title: string,
     url: string,
     description: string,
-    price: number
+    price: number,
+    collectionName?: string
 };
 
 const CollectionSchema: Schema = new Schema({
@@ -39,6 +40,10 @@ const CollectionSchema: Schema = new Schema({
         url : {
             type: String,
             required: true
+        },
+        collectionName : {
+            type: String,
+            required: false
         }
     }]
 });
