@@ -1,4 +1,4 @@
-import {Schema, model, Document} from 'mongoose';
+import {Schema, model, Document, Types} from 'mongoose';
 
 
 interface CollectionInterface extends Document{
@@ -41,10 +41,28 @@ const CollectionSchema: Schema = new Schema({
             type: String,
             required: true
         },
+        comments:[{
+            email : {
+                type: String,
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                required: true
+            },
+            text: {
+                type: String,
+                required: true
+            },
+            id: {
+                type: Types.ObjectId,
+                required: true
+            }
         collectionName : {
             type: String,
             required: false
         }
+        ]
     }]
 });
 

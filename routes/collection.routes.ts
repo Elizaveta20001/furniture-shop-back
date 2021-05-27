@@ -3,6 +3,7 @@ import {Router} from 'express';
 import {templateHandler} from '../helpers/templateHandler';
 import {templateCollectionItemHandler} from "../helpers/templateCollectionItemHandler";
 import Collection from '../models/Collection';
+import {templateCommentHandler} from "../helpers/templateCommentHandler";
 
 
 const router = Router();
@@ -39,6 +40,28 @@ router.get(
     '/beds/:id',
     templateCollectionItemHandler("Beds", Collection)
 );
+
+router.post(
+    '/armchairs/comment/:id',
+    templateCommentHandler("Armchairs", Collection)
+);
+
+router.post(
+    '/beds/comment/:id',
+    templateCommentHandler("Beds", Collection)
+);
+
+router.post(
+    '/sofas/comment/:id',
+    templateCommentHandler("Sofas", Collection)
+);
+
+router.post(
+    '/tables/comment/:id',
+    templateCommentHandler("Tables", Collection)
+);
+
+
 
 
 export default router;
