@@ -3,11 +3,17 @@ export const search = (str: string, array: any) => {
     const result: any[] = [];
     array.forEach((elem: any) => {
         if(elem.title.toLowerCase().includes(lowerStr)){
-            result.push(...elem.items);
+            result.push(...elem.items.map(
+                (item: any) => {
+                    item.collectionName = elem.title.toLowerCase()
+                    return item;
+                })
+            );
         }
 
         elem.items.forEach((item: any) => {
             if(item.title.toLowerCase().includes(lowerStr)){
+                item.collectionName = elem.title.toLowerCase();
                 result.push(item);
             }
         })
