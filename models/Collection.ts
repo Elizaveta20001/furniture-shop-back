@@ -62,6 +62,17 @@ const CollectionSchema: Schema = new Schema({
                 type: Types.ObjectId,
                 required: true
             }
+        }],
+        rating:[{
+            userId: {
+                type: String,
+                required: true
+            },
+            value: {
+                type: Number,
+                required: true
+            }
+
         }]
     }]
 });

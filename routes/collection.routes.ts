@@ -4,6 +4,7 @@ import {templateHandler} from '../helpers/templateHandler';
 import {templateCollectionItemHandler} from "../helpers/templateCollectionItemHandler";
 import Collection from '../models/Collection';
 import {templateCommentHandler} from "../helpers/templateCommentHandler";
+import {templateRatingHandler} from "../helpers/templateRatingHandler";
 
 
 const router = Router();
@@ -59,6 +60,27 @@ router.post(
 router.post(
     '/tables/comment/:id',
     templateCommentHandler("Tables", Collection)
+);
+
+
+router.post(
+    '/armchairs/rating/:id',
+    templateRatingHandler("Armchairs", Collection)
+);
+
+router.post(
+    '/beds/rating/:id',
+    templateRatingHandler("Beds", Collection)
+);
+
+router.post(
+    '/sofas/rating/:id',
+    templateRatingHandler("Sofas", Collection)
+);
+
+router.post(
+    '/tables/rating/:id',
+    templateRatingHandler("Tables", Collection)
 );
 
 
