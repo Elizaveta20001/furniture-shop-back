@@ -8,12 +8,12 @@ router.get(
     '/',
     async (req: Request, res: Response) => {
         try{
-            const {field, header} = req.body;
+            const {field, collectionName} = req.body;
 
-            const resultCollection = field && header ? await Collection.aggregate(
+            const resultCollection = field && collectionName ? await Collection.aggregate(
                 [
                     {"$match": {
-                            'title': header,
+                            'title': collectionName,
                             'items.title': { "$regex": field, "$options": "i" },
                     }},
                     {"$unwind": "$items"},
