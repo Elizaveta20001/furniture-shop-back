@@ -1,18 +1,26 @@
 import { Router, Request, Response } from 'express';
-import { search } from '../helpers/search';
 import Collection from '../models/Collection';
 
 
 const router = Router();
 
-router.post(
-    '/', 
+router.get(
+    '/',
     async (req: Request, res: Response) => {
         try{
-            const {field} = req.body;
-            const collection = await Collection.find();
+            const {field, header} = req.body;
 
-            const result = field ? search(field, collection) : [];
+            const resultCollection = field && header ? await Collection.aggregate(
+                [
+                    {"$match": {
+                            'title': header,
+                            'items.title': { "$regex": field, "$options": "i" },
+                    }},
+                    {"$unwind": "$items"},
+                    {"$match": {'items.title': { "$regex": field, "$options": "i" }}},
+                ]) : [];
+
+            const result = resultCollection.map( (item) => item.items )
 
             res.json({
                 searchResult: result
