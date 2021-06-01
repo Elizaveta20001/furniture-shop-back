@@ -12,7 +12,22 @@ interface CollectionItemInterface extends Document{
     url: string,
     description: string,
     price: number,
+    comments: Comment[],
+    rating: Rating[]
+
 };
+
+interface Comment{
+    email: string,
+    createdAt: Date,
+    text: string,
+    id: Types.ObjectId
+}
+
+interface Rating{
+    userId: String,
+    value: number
+}
 
 const CollectionSchema: Schema = new Schema({
     title: {
@@ -57,6 +72,17 @@ const CollectionSchema: Schema = new Schema({
                 type: Types.ObjectId,
                 required: true
             }
+        }],
+        rating:[{
+            userId: {
+                type: String,
+                required: true
+            },
+            value: {
+                type: Number,
+                required: true
+            }
+
         }]
     }]
 });
