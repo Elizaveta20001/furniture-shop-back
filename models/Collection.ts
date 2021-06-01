@@ -12,8 +12,22 @@ interface CollectionItemInterface extends Document{
     url: string,
     description: string,
     price: number,
-    collectionName?: string
+    collectionName?: string,
+    comments: Comment[],
+    rating: Rating[]
 };
+
+interface Comment{
+    email: string,
+    createdAt: Date,
+    text: string,
+    id: Types.ObjectId
+}
+
+interface Rating{
+    userId: String,
+    value: number
+}
 
 const CollectionSchema: Schema = new Schema({
     title: {
