@@ -11,7 +11,7 @@ export const templateCommentHandler = (collectionName: string, Model: any) => as
         const userData: any = await User.findOne({_id: request.body.user});
 
         if(!userData){
-            response.status(401).json({message: 'No such user'});
+            return response.status(401).json({message: 'No such user'});
         }
         else{
             const email = userData.email;
@@ -25,7 +25,7 @@ export const templateCommentHandler = (collectionName: string, Model: any) => as
 
             const query = {title: collectionName, items: {$elemMatch: {id: request.params.id}}};
             await Model.findOneAndUpdate(query, {$push: {'items.$.comments': newComment}}, {useFindAndModify: false});
-            response.status(200);
+            response.status(200).json({message: 'Your comment has been successfully recorded'});
         }
     } catch (error) {
         response.status(500).json(error);
