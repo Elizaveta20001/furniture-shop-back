@@ -25,7 +25,7 @@ router.get(
             res.json({
                 searchResult: resultCollection.map( (item) => {
                     let resultItem = item.items;
-                    resultItem.collectionName = item.title;
+                    resultItem.collectionName = item.title.toLowerCase();
                     return resultItem;
                 } )
             })
