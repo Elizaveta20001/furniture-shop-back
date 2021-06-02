@@ -12,9 +12,9 @@ interface CollectionItemInterface extends Document{
     url: string,
     description: string,
     price: number,
+    collectionName?: string,
     comments: Comment[],
     rating: Rating[]
-
 };
 
 interface Comment{
@@ -54,6 +54,10 @@ const CollectionSchema: Schema = new Schema({
         url: {
             type: String,
             required: true
+        },
+        collectionName : {
+            type: String,
+            required: false
         },
         comments: [{
             email: {

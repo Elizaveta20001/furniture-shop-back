@@ -22,9 +22,12 @@ router.get(
                     {"$unwind": "$items"},
                     {"$match": {'items.title': { "$regex": field, "$options": "i" }}},
                 ]) : [];
-
             res.json({
-                searchResult: resultCollection.map( (item) => item.items )
+                searchResult: resultCollection.map( (item) => {
+                    let resultItem = item.items;
+                    resultItem.collectionName = item.title.toLowerCase();
+                    return resultItem;
+                } )
             })
         } catch(e){
             res.status(500).json({message: 'something goes wrong'});
