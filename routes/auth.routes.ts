@@ -11,6 +11,9 @@ interface User {
     email: string;
     password: string;
     id: string;
+    firstName: string,
+    lastName: string,
+    image: string
 }
 
 const router = Router();
@@ -20,11 +23,7 @@ const JWT_SECRET: any = config.get('jwtSecret');
 
 // '/api/auth/register'
 router.post(
-    '/register', 
-    [
-        check('email', 'incorrect email').isEmail(),
-        check('password', 'need more than 6 symbols').isLength({min: 6})
-    ],
+    '/register',
     async (request: Request, response: Response) => {
         try{
             const errors = validationResult(request);
@@ -36,7 +35,7 @@ router.post(
                 })
             }
 
-            const {email, password} = request.body;
+            const {email, password, firstName, lastName, image} = request.body;
 
             const candidate = await User.findOne({email});
 
@@ -46,10 +45,10 @@ router.post(
 
             const hashedPassword = await bcrypt.hash(password, 12);
 
-            const user = new User({email, password: hashedPassword});
-            await user.save();
-
-            response.status(201).json({message: 'user is created'});
+            const user = new User({email, password: hashedPassword, firstName, lastName});
+            // await user.save();
+            //
+            // response.status(201).json({message: 'user is created'});
         } catch(e){
             response.status(500).json({message: 'something goes wrong'});
         }
