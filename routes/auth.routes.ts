@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from'jsonwebtoken';
+import multer from 'multer';
 
 import config from 'config';
 import {check, validationResult} from 'express-validator';
@@ -18,34 +19,44 @@ interface User {
 
 const router = Router();
 
+const upload = multer({ dest: 'uploads/' });
 const JWT_SECRET: any = config.get('jwtSecret');
 
 
 // '/api/auth/register'
 router.post(
     '/register',
+    upload.single('image'),
     async (request: Request, response: Response) => {
         try{
-            const errors = validationResult(request);
+            // const errors = validationResult(request);
+            //
+            // if(!errors.isEmpty()){
+            //     return response.status(400).json({
+            //         errors: errors.array(),
+            //         message: 'incorrect data'
+            //     })
+            // }
 
-            if(!errors.isEmpty()){
-                return response.status(400).json({
-                    errors: errors.array(),
-                    message: 'incorrect data'
-                })
-            }
-
-            const {email, password, firstName, lastName, image} = request.body;
-
-            const candidate = await User.findOne({email});
-
-            if(candidate){
-                return response.status(400).json({message: 'this user is already exist'});
-            }
-
-            const hashedPassword = await bcrypt.hash(password, 12);
-
-            const user = new User({email, password: hashedPassword, firstName, lastName});
+            // const {email, password, firstName, lastName, image} = request.body;
+            console.log(request.body.name);
+            console.log(request.file);
+            // const candidate = await User.findOne({email});
+            //
+            // if(candidate){
+            //     return response.status(400).json({message: 'this user is already exist'});
+            // }
+            //
+            // const hashedPassword = await bcrypt.hash(password, 12);
+            // console.log(image);
+            //
+            // response.status(201).json({
+            //     firstName,
+            //     lastName,
+            //     password: hashedPassword,
+            //     email
+            // });
+            // const user = new User({email, password: hashedPassword, firstName, lastName});
             // await user.save();
             //
             // response.status(201).json({message: 'user is created'});
