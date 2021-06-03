@@ -1,11 +1,13 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from'jsonwebtoken';
-import multer from 'multer';
+const multer = require('multer');
+import {CloudinaryStorage} from 'multer-storage-cloudinary';
+const cloudinary = require('cloudinary').v2;
 
-import config from 'config';
 import {check, validationResult} from 'express-validator';
 import User from '../models/User';
+import config from "config";
 
 
 interface User {
@@ -19,47 +21,39 @@ interface User {
 
 const router = Router();
 
-const upload = multer({ dest: 'uploads/' });
+cloudinary.config({
+    cloud_name: config.get('CLOUDINARY_NAME'),
+    api_key: config.get('CLOUDINARY_KEY'),
+    api_secret: config.get('CLOUDINARY_SECRET')
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary
+});
+
+const parser = multer({ storage: storage });
 const JWT_SECRET: any = config.get('jwtSecret');
 
 
-// '/api/auth/register'
+'/api/auth/register'
 router.post(
     '/register',
-    upload.single('image'),
+    parser.single('image'),
     async (request: Request, response: Response) => {
         try{
-            // const errors = validationResult(request);
-            //
-            // if(!errors.isEmpty()){
-            //     return response.status(400).json({
-            //         errors: errors.array(),
-            //         message: 'incorrect data'
-            //     })
-            // }
+            const {email, password, firstName, lastName} = request.body;
+            const candidate = await User.findOne({email});
 
-            // const {email, password, firstName, lastName, image} = request.body;
-            console.log(request.body.name);
-            console.log(request.file);
-            // const candidate = await User.findOne({email});
-            //
-            // if(candidate){
-            //     return response.status(400).json({message: 'this user is already exist'});
-            // }
-            //
-            // const hashedPassword = await bcrypt.hash(password, 12);
-            // console.log(image);
-            //
-            // response.status(201).json({
-            //     firstName,
-            //     lastName,
-            //     password: hashedPassword,
-            //     email
-            // });
-            // const user = new User({email, password: hashedPassword, firstName, lastName});
-            // await user.save();
-            //
-            // response.status(201).json({message: 'user is created'});
+            if(candidate){
+                return response.status(400).json({message: 'this user is already exist'});
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 12);
+
+            const user = new User({email, password: hashedPassword, firstName, lastName, image: request.file.path});
+            await user.save();
+
+            response.status(201).json({message: 'user is created'});
         } catch(e){
             response.status(500).json({message: 'something goes wrong'});
         }
