@@ -5,8 +5,11 @@ import User from "../models/User";
 import CommentSchema from "../models/Comment";
 
 
-export const templateCommentHandler = (collectionName: string, Model: any) => async (request: Request, response: Response) => {
+export const templateCommentHandler = (Model: any) => async (request: Request, response: Response) => {
     const {text, createdAt} = request.body;
+    let collectionName = request.params.collectionName;
+    collectionName = collectionName.charAt(0).toUpperCase() + collectionName.slice(1);
+
     try {
         const userData: any = await User.findOne({_id: request.body.user});
 

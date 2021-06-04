@@ -1,7 +1,10 @@
 import {Request, Response} from "express";
 
-export const templateCollectionItemHandler = (collectionName: string, Model: any) => async (request:Request, response:Response) =>{
+export const templateCollectionItemHandler = (Model: any) => async (request:Request, response:Response) =>{
     const id = request.params.id;
+    let collectionName = request.params.collectionName;
+    collectionName = collectionName.charAt(0).toUpperCase() + collectionName.slice(1);
+
     try{
         const query = {title: collectionName, 'items.id': id };
         const collection = await Model.findOne(query,{ "items.$": id});
