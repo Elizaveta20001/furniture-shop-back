@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import {check, validationResult} from 'express-validator';
 import User from '../models/User';
 import config from 'config';
-import parser from './../config/cloadinary.config';
+import parser from '../helpers/cloadinary.config';
 
 
 interface User {

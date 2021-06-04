@@ -1,8 +1,7 @@
 import {Router, Request, Response} from 'express';
 import User from '../models/User';
 
-import parser from "../config/cloadinary.config";
-import {memoryStorage} from "multer";
+import parser from "../helpers/cloadinary.config";
 import bcrypt from "bcryptjs";
 
 const router = Router();
