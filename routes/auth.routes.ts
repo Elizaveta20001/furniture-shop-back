@@ -2,14 +2,10 @@ import {Router, Request, Response} from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const multer = require('multer');
-import {CloudinaryStorage} from 'multer-storage-cloudinary';
-
-const cloudinary = require('cloudinary').v2;
-
 import {check, validationResult} from 'express-validator';
 import User from '../models/User';
-import config from "config";
+import config from 'config';
+import parser from './../config/cloadinary.config';
 
 
 interface User {
@@ -23,17 +19,6 @@ interface User {
 
 const router = Router();
 
-cloudinary.config({
-    cloud_name: config.get('CLOUDINARY_NAME'),
-    api_key: config.get('CLOUDINARY_KEY'),
-    api_secret: config.get('CLOUDINARY_SECRET')
-});
-
-const storage = new CloudinaryStorage({
-    cloudinary
-});
-
-const parser = multer({storage: storage});
 const JWT_SECRET: any = config.get('jwtSecret');
 
 
