@@ -4,8 +4,11 @@ import User from "../models/User";
 import RatingSchema from "../models/Rating";
 
 
-export const templateRatingHandler = (collectionName: string, Model: any) => async (request: Request, response: Response) => {
+export const templateRatingHandler = (Model: any) => async (request: Request, response: Response) => {
     const {userId, value} = request.body;
+    let collectionName = request.params.collectionName;
+    collectionName = collectionName.charAt(0).toUpperCase() +collectionName.slice(1);
+
     try {
         const query = {title: collectionName, items: {$elemMatch: {id: request.params.id}}};
         const userData: any = await User.findOne({_id: request.body.userId});
