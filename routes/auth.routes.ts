@@ -1,74 +1,103 @@
-import { Router, Request, Response } from 'express';
+import {Router, Request, Response} from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
-import config from 'config';
+const multer = require('multer');
+import {CloudinaryStorage} from 'multer-storage-cloudinary';
+
+const cloudinary = require('cloudinary').v2;
+
 import {check, validationResult} from 'express-validator';
 import User from '../models/User';
+import config from "config";
 
 
 interface User {
     email: string;
     password: string;
     id: string;
+    firstName: string,
+    lastName: string,
+    image: string
 }
 
 const router = Router();
 
+cloudinary.config({
+    cloud_name: config.get('CLOUDINARY_NAME'),
+    api_key: config.get('CLOUDINARY_KEY'),
+    api_secret: config.get('CLOUDINARY_SECRET')
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary
+});
+
+const parser = multer({storage: storage});
 const JWT_SECRET: any = config.get('jwtSecret');
 
 
-// '/api/auth/register'
+//'/api/auth/register'
 router.post(
-    '/register', 
-    [
-        check('email', 'incorrect email').isEmail(),
-        check('password', 'need more than 6 symbols').isLength({min: 6})
-    ],
+    '/register',
+    parser.single('image'),
     async (request: Request, response: Response) => {
-        try{
-            const errors = validationResult(request);
-
-            if(!errors.isEmpty()){
-                return response.status(400).json({
-                    errors: errors.array(),
-                    message: 'incorrect data'
-                })
-            }
-
-            const {email, password} = request.body;
-
+        try {
+            const {email, password, firstName, lastName} = request.body;
             const candidate = await User.findOne({email});
 
-            if(candidate){
+            if (candidate) {
                 return response.status(400).json({message: 'this user is already exist'});
             }
 
             const hashedPassword = await bcrypt.hash(password, 12);
 
-            const user = new User({email, password: hashedPassword});
+            const user = new User({email, password: hashedPassword, firstName, lastName, image: request.file.path});
             await user.save();
 
             response.status(201).json({message: 'user is created'});
-        } catch(e){
+        } catch (e) {
             response.status(500).json({message: 'something goes wrong'});
         }
     }
 );
 
+router.get(
+    '/register/:userId',
+    async (request: Request, response: Response) => {
+        try {
+            const userId = request.params.userId;
+            const candidate: any = await User.findOne({_id: userId});
+
+            if (candidate) {
+                return response.status(200).json({
+                    email: candidate.email,
+                    firstName: candidate.firstName,
+                    lastName: candidate.lastName,
+                    image: candidate.image
+
+                });
+            }
+            return response.status(404).json({message: 'user not found'});
+        }catch (e) {
+            response.status(500).json({message: 'something goes wrong'});
+        }
+    }
+)
+
 
 // '/api/auth/login'
 router.post(
-    '/login', 
+    '/login',
     [
         check('email', 'enter correct email').normalizeEmail().isEmail(),
         check('password', 'enter password').exists()
     ],
     async (request: Request, response: Response) => {
-        try{
+        try {
             const errors = validationResult(request);
 
-            if(!errors.isEmpty()){
+            if (!errors.isEmpty()) {
                 return response.status(400).json({
                     errors: errors.array(),
                     message: 'incorrect data on start'
@@ -79,28 +108,28 @@ router.post(
 
             const user: any = await User.findOne({email});
 
-            if(!user){
+            if (!user) {
                 return response.status(400).json({message: 'user is not find'});
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
 
-            if(!isMatch){
+            if (!isMatch) {
                 return response.status(400).json({message: 'incorrect password'});
             }
 
             const token = jwt.sign(
-                { userId: user.id },
+                {userId: user.id},
                 JWT_SECRET,
-                { expiresIn: '1h' }
+                {expiresIn: '1h'}
             )
 
             response.json({
                 token,
                 userId: user.id
             })
-            
-        } catch(e){
+
+        } catch (e) {
             response.status(500).json({message: 'something goes wrong'});
         }
     }

@@ -13,7 +13,19 @@ const schema = new Schema({
     links: [{
         type: Types.ObjectId,
         ref: 'Link'
-    }]
+    }],
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    image:{
+        type: String,
+        required: true
+    }
 });
 
 

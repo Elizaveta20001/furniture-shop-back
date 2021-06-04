@@ -3,5 +3,9 @@
     "jwtSecret": "789",
     "mongoUri": "mongodb+srv://mikita:123@cluster0.frvm0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     "baseUrl": "http://localhost:5000",
-    "apiKey": "sk_test_51IuwMwCxpYbk6oLaNaUJewL2YVqQPkim5tpDLnmIv1JAQcxvYljqhqeCqbDizMYpn3fl7wricC4nNKMAlr4CbQul00LyHnp4Oe"
+    "apiKey": "sk_test_51IuwMwCxpYbk6oLaNaUJewL2YVqQPkim5tpDLnmIv1JAQcxvYljqhqeCqbDizMYpn3fl7wricC4nNKMAlr4CbQul00LyHnp4Oe",
+    "CLOUDINARY_NAME": "dwmxnk6lv",
+    "CLOUDINARY_KEY" : "864477837957585",
+    "CLOUDINARY_SECRET" : "G0mD21y8Ex28h7g0P9qlo0iICOg"
+
 }
