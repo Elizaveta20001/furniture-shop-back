@@ -6,7 +6,7 @@ const CommentSchema: Schema = new Schema({
         type: Types.ObjectId,
         required: true
     },
-    email:{
+    userId:{
         type: String,
         required: true
     },

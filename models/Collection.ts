@@ -60,7 +60,7 @@ const CollectionSchema: Schema = new Schema({
             required: false
         },
         comments: [{
-            email: {
+            userId: {
                 type: String,
                 required: true
             },

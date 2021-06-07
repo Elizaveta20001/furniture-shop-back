@@ -25,7 +25,7 @@ router.get(
 
                 });
             }
-            return response.status(404).json({message: 'user not found'});
+            return response.status(404).json({message: 'No such user'});
         } catch (error) {
             response.status(500).json({message: 'something goes wrong'});
         }
@@ -94,10 +94,14 @@ router.put(
     }
 );
 
-
 router.get(
     '/rating/:userId',
     templateGetHandler('rating')
+);
+
+router.get(
+    '/comments/:userId',
+    templateGetHandler('comments')
 )
 
 
