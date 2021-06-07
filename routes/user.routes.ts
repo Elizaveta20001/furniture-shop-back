@@ -3,6 +3,9 @@ import User from '../models/User';
 
 import parser from "../helpers/cloadinary.config";
 import bcrypt from "bcryptjs";
+import Collection from "../models/Collection";
+import {getQuery} from "../helpers/queryForRatingAndComment";
+import {templateGetHandler} from "../helpers/templateGetHandler";
 
 const router = Router();
 
@@ -90,6 +93,12 @@ router.put(
         }
     }
 );
+
+
+router.get(
+    '/rating/:userId',
+    templateGetHandler('rating')
+)
 
 
 export default router;
