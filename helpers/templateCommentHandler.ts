@@ -6,23 +6,23 @@ import CommentSchema from "../models/Comment";
 
 
 export const templateCommentHandler = (Model: any) => async (request: Request, response: Response) => {
-    const {text, createdAt} = request.body;
+    const {text, createdAt, user} = request.body;
     let collectionName = request.params.collectionName;
     collectionName = collectionName.charAt(0).toUpperCase() + collectionName.slice(1);
 
     try {
-        const userData: any = await User.findOne({_id: request.body.user});
+        const userData: any = await User.findOne({_id: user});
 
         if(!userData){
             return response.status(401).json({message: 'No such user'});
         }
         else{
-            const email = userData.email;
+            // const email = userData.email;
 
             const newComment = new CommentSchema({
                 text,
                 createdAt,
-                email,
+                userId: user,
                 id: new Types.ObjectId()
             });
 

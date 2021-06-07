@@ -8,6 +8,7 @@ import collectionRoutes from './routes/collection.routes';
 import catalogRoutes from './routes/catalog.routes';
 import searchResultRoutes from './routes/serachResult.routes';
 import paymentRoues from './routes/payment.routes';
+import userRoutes from './routes/user.routes';
 
 
 const app: Application = express();
@@ -24,6 +25,7 @@ app.use('/api/catalog', catalogRoutes);
 app.use('/api/catalog/collections', collectionRoutes);
 app.use('/api/search', searchResultRoutes);
 app.use('/payment', paymentRoues);
+app.use('/api/user',userRoutes);
 
 
 const PORT: number = config.get('port') || 5000;
