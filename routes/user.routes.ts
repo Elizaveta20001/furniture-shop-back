@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 import Collection from "../models/Collection";
 import {getQuery} from "../helpers/queryForRatingAndComment";
 import {templateGetHandler} from "../helpers/templateGetHandler";
+import {getItemData} from "../helpers/getItemData";
+import Order from "../models/Order";
 
 const router = Router();
 
@@ -40,7 +42,7 @@ router.put(
         try {
             const userId = request.params.userId;
 
-            let user = User.findOne({_id: userId});
+            const user = User.findOne({_id: userId});
             if (!user) {
                 return response.status(404).json({message: 'No such user'});
             }
@@ -58,7 +60,8 @@ router.put(
                 image: image,
                 firstName,
                 lastName
-            }, {useFindAndModify: false})
+            }, {useFindAndModify: false});
+
             return response.status(200).json({message: 'Your data is successfully updated'});
 
         } catch (error) {
@@ -78,8 +81,8 @@ router.put(
             if (!user) {
                 return response.status(404).json({message: 'No such user'});
             }
-            const isMatch = await bcrypt.compare(oldPassword, user.password);
 
+            const isMatch = await bcrypt.compare(oldPassword, user.password);
             if (!isMatch) {
                 return response.status(400).json({message: 'Incorrect password'});
             }
@@ -102,7 +105,52 @@ router.get(
 router.get(
     '/comments/:userId',
     templateGetHandler('comments')
-)
+);
 
+router.post(
+    '/:userId/order-history',
+    async (request: Request, response: Response) => {
+        try {
+            const items: Array<{ id: string, quantity: number }> = request.body.items;
+
+            const itemsWithData = await Promise.all(items.map(async (element) => {
+                const itemData = await getItemData(element.id);
+                return ({
+                    quantity: element.quantity,
+                    id: element.id,
+                    title: itemData.items[0].title,
+                    url: itemData.items[0].url,
+                    price: itemData.items[0].price
+                });
+            }));
+
+            const newOrder = new Order({
+                date: Date.now(),
+                items: itemsWithData
+            });
+
+            await User.findOneAndUpdate({_id: request.params.userId}, {$push: {'orderHistory': newOrder}}, {useFindAndModify: false});
+            response.status(201).json({message: 'Your order is successfully recorded'});
+
+        } catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+);
+
+router.get(
+    '/:userId/order-history',
+    async (request: Request, response: Response) => {
+        try {
+            const user: any = await User.findOne({_id: request.params.userId});
+            response.status(200).json({
+                orderHistory: user.orderHistory
+            });
+
+        } catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+)
 
 export default router;

@@ -10,10 +10,6 @@ const schema = new Schema({
         type: String,
         required: true,
     },
-    links: [{
-        type: Types.ObjectId,
-        ref: 'Link'
-    }],
     firstName: {
         type: String,
         required: true
@@ -25,7 +21,39 @@ const schema = new Schema({
     image:{
         type: String,
         required: true
-    }
+    },
+    orderHistory: [
+        {
+            date:{
+                type: Date,
+                required: true
+            },
+            items: [
+                {
+                    title:{
+                        type: String,
+                        required: true
+                    },
+                    price:{
+                        type: Number,
+                        required: true
+                    },
+                    url:{
+                        type: String,
+                        required: true
+                    },
+                    quantity:{
+                        type: Number,
+                        required: true
+                    },
+                    id:{
+                        type: String,
+                        required: true
+                    }
+                }
+            ]
+        }
+    ]
 });
 
 
