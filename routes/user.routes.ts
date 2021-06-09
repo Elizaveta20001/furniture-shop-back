@@ -109,7 +109,7 @@ router.post(
     '/:userId/order-history',
     async (request: Request, response: Response) => {
         try {
-            const items: Array<{ id: string, quantity: number }> = request.body.items;
+            const items: Array<{ id: number, quantity: number }> = request.body.items;
 
             const itemsWithData = await Promise.all(items.map(async (element) => {
                 const itemData = await getItemData(element.id);
@@ -170,11 +170,34 @@ router.post(
                 return response.status(400).json({message: 'This item has already been recorded'})
             }
 
-            await User.findOneAndUpdate({_id: userId},{$push: {'favorites': {itemId: itemId }}})
-            response.status(201).json({message: 'This item is successfully recorded.'})
+            await User.findOneAndUpdate({_id: userId},{$push: {'favorites': {itemId: itemId }}});
+            response.status(201).json({message: 'This item is successfully recorded.'});
 
         }catch (error) {
-            response.status(500).json({message: 'Something goes wrong'})
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+);
+
+router.get(
+    '/:userId/favorites',
+    async (request: Request, response: Response) => {
+        try{
+            const user: any = await User.findOne({_id: request.params.userId});
+            const favorites = await Promise.all(user.favorites.map(async(element: {itemId: number}) => {
+                const itemData = await getItemData(element.itemId);
+                return{
+                    id: element.itemId,
+                    collectionName: itemData.title,
+                    title: itemData.items[0].title,
+                    url: itemData.items[0].url,
+                    price: itemData.items[0].price,
+                };
+
+            }));
+            response.status(200).json(favorites);
+        }catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
         }
     }
 );
