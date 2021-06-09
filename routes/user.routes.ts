@@ -150,6 +150,33 @@ router.get(
             response.status(500).json({message: 'Something goes wrong'});
         }
     }
-)
+);
+
+router.post(
+    '/:userId/favorites',
+    async (request: Request, response:Response)=>{
+        try{
+            const userId = request.params.userId;
+            const itemId = request.body.id;
+
+            const user: any = await User.findOne({_id: userId});
+            if(!user){
+                return response.status(404).json({message: 'No such user'});
+            }
+
+            const item: any = await User.findOne({_id: userId, favorites: {'$elemMatch' : {itemId: itemId}}});
+
+            if(item){
+                return response.status(400).json({message: 'This item has already been recorded'})
+            }
+
+            await User.findOneAndUpdate({_id: userId},{$push: {'favorites': {itemId: itemId }}})
+            response.status(201).json({message: 'This item is successfully recorded.'})
+
+        }catch (error) {
+            response.status(500).json({message: 'Something goes wrong'})
+        }
+    }
+);
 
 export default router;
