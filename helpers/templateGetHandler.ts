@@ -15,11 +15,11 @@ export const templateGetHandler = (type: string) => async (request: Request, res
         }
         const items = await Collection.aggregate(
             [getQuery(type, userId)]
-        )
+        );
 
         let result: any = [];
         items.forEach((element) => {
-            if(element.items.length > 0){
+            if (element.items.length > 0) {
                 result.push(...element.items);
             }
         })

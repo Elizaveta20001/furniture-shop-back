@@ -32,5 +32,5 @@ export const getQuery = (type: string, userId: string) => {
                 }
             }
         }
-    })
-}
+    });
+};
