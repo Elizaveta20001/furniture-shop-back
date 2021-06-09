@@ -3,11 +3,9 @@ import User from '../models/User';
 
 import parser from "../helpers/cloadinary.config";
 import bcrypt from "bcryptjs";
-import Collection from "../models/Collection";
-import {getQuery} from "../helpers/queryForRatingAndComment";
 import {templateGetHandler} from "../helpers/templateGetHandler";
 import {getItemData} from "../helpers/getItemData";
-import Order from "../models/Order";
+
 
 const router = Router();
 
@@ -125,10 +123,10 @@ router.post(
                 });
             }));
 
-            const newOrder = new Order({
+            const newOrder = {
                 date: Date.now(),
                 items: itemsWithData
-            });
+            };
 
             await User.findOneAndUpdate({_id: request.params.userId}, {$push: {'orderHistory': newOrder}}, {useFindAndModify: false});
             response.status(201).json({message: 'Your order is successfully recorded'});

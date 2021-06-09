@@ -1,5 +1,4 @@
 import {Request, Response} from "express";
-import User from "../models/User";
 import {getUserEmail} from "./getUserEmail";
 
 export const templateCollectionItemHandler = (Model: any) => async (request: Request, response: Response) => {
@@ -13,22 +12,23 @@ export const templateCollectionItemHandler = (Model: any) => async (request: Req
         const item = collection.items[0];
 
         const comments = await Promise.all(item.comments.map(async (element: any) => {
-                return({
-                    text: element.text,
-                    createdAt: element.createdAt,
-                    email: await getUserEmail(element.userId)
-                })
+            return ({
+                text: element.text,
+                createdAt: element.createdAt,
+                email: await getUserEmail(element.userId)
+            })
         }));
 
         response.json({
-                title: item.title,
-                description: item.description,
-                url: item.url,
-                price: item.price,
-                rating: item.rating,
-                id: item.id,
-                comments: comments
-            });
+            title: item.title,
+            description: item.description,
+            url: item.url,
+            price: item.price,
+            rating: item.rating,
+            id: item.id,
+            comments: comments
+        });
+
     } catch (error) {
         response.status(500).send(error);
     }
