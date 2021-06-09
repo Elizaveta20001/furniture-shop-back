@@ -120,7 +120,8 @@ router.post(
                     id: element.id,
                     title: itemData.items[0].title,
                     url: itemData.items[0].url,
-                    price: itemData.items[0].price
+                    price: itemData.items[0].price,
+                    collectionName: itemData.title
                 });
             }));
 
