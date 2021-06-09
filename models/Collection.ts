@@ -1,12 +1,12 @@
-import {Schema, model, Document, Types} from 'mongoose';
+import {Schema, model, Types} from 'mongoose';
 
 
-interface CollectionInterface extends Document{
+export interface CollectionInterface{
     title: string,
     items: CollectionItemInterface[],
-};
+}
 
-interface CollectionItemInterface extends Document{
+export interface CollectionItemInterface{
     id: number;
     title: string,
     url: string,
@@ -15,7 +15,7 @@ interface CollectionItemInterface extends Document{
     collectionName?: string,
     comments: Comment[],
     rating: Rating[]
-};
+}
 
 interface Comment{
     email: string,

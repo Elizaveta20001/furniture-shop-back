@@ -18,6 +18,11 @@ router.get(
     templateCollectionItemHandler(Collection)
 );
 
+router.get(
+    '/:collectionName/user/:userId',
+    templateHandler(Collection)
+);
+
 router.post(
     '/:collectionName/comment/:id',
     templateCommentHandler( Collection)

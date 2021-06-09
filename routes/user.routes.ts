@@ -211,15 +211,13 @@ router.delete(
         try{
             const {userId, itemId} = request.params;
 
-            const data: any = await User.findOne({_id: userId, favorites: {'$elemMatch': {itemId: itemId}}})
+            const data: any = await User.findOne({_id: userId, favorites: {'$elemMatch': {itemId: itemId}}});
             if(!data){
                 return response.status(404).json({message: 'No such user or no such item in favorites'});
             }
 
-
             await User.findOneAndUpdate({_id: userId}, {'$pull' : {'favorites': {itemId: itemId}}}, {useFindAndModify: false});
             response.status(200).json({message: 'This item is successfully removed from favorites'});
-
 
         }catch (error) {
             response.status(500).json({message: 'Something goes wrong'});
