@@ -28,6 +28,10 @@ const OrderSchema = new Schema({
                 type: String,
                 required: true
             },
+            collectionName:{
+                type: String,
+                required: true
+            }
         }
     ]
 });

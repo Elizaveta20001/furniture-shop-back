@@ -49,6 +49,10 @@ const schema = new Schema({
                     id:{
                         type: String,
                         required: true
+                    },
+                    collectionName: {
+                        type: String,
+                        required: true
                     }
                 }
             ]
