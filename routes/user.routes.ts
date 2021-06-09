@@ -184,22 +184,47 @@ router.get(
     async (request: Request, response: Response) => {
         try{
             const user: any = await User.findOne({_id: request.params.userId});
-            const favorites = await Promise.all(user.favorites.map(async(element: {itemId: number}) => {
-                const itemData = await getItemData(element.itemId);
-                return{
-                    id: element.itemId,
-                    collectionName: itemData.title,
-                    title: itemData.items[0].title,
-                    url: itemData.items[0].url,
-                    price: itemData.items[0].price,
-                };
+            let favorites: Array<any> = [];
+            if(user.favorites){
+                favorites = await Promise.all(user.favorites.map(async(element: {itemId: number}) => {
+                    const itemData = await getItemData(element.itemId);
+                    return{
+                        id: element.itemId,
+                        collectionName: itemData.title,
+                        title: itemData.items[0].title,
+                        url: itemData.items[0].url,
+                        price: itemData.items[0].price,
+                    };
 
-            }));
+                }));
+            }
             response.status(200).json(favorites);
         }catch (error) {
             response.status(500).json({message: 'Something goes wrong'});
         }
     }
 );
+
+router.delete(
+    '/:userId/favorites/:itemId',
+    async (request: Request, response: Response) => {
+        try{
+            const {userId, itemId} = request.params;
+
+            const data: any = await User.findOne({_id: userId, favorites: {'$elemMatch': {itemId: itemId}}})
+            if(!data){
+                return response.status(404).json({message: 'No such user or no such item in favorites'});
+            }
+
+
+            await User.findOneAndUpdate({_id: userId}, {'$pull' : {'favorites': {itemId: itemId}}}, {useFindAndModify: false});
+            response.status(200).json({message: 'This item is successfully removed from favorites'});
+
+
+        }catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+)
 
 export default router;
