@@ -8,15 +8,6 @@ import config from 'config';
 import parser from '../helpers/cloadinary.config';
 
 
-interface User {
-    email: string;
-    password: string;
-    id: string;
-    firstName: string,
-    lastName: string,
-    image: string
-}
-
 const router = Router();
 
 const JWT_SECRET: any = config.get('jwtSecret');

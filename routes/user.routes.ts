@@ -109,7 +109,7 @@ router.post(
     '/:userId/order-history',
     async (request: Request, response: Response) => {
         try {
-            const items: Array<{ id: string, quantity: number }> = request.body.items;
+            const items: Array<{ id: number, quantity: number }> = request.body.items;
 
             const itemsWithData = await Promise.all(items.map(async (element) => {
                 const itemData = await getItemData(element.id);
@@ -147,6 +147,79 @@ router.get(
             });
 
         } catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+);
+
+router.post(
+    '/:userId/favorites',
+    async (request: Request, response:Response)=>{
+        try{
+            const userId = request.params.userId;
+            const itemId = request.body.id;
+
+            const user: any = await User.findOne({_id: userId});
+            if(!user){
+                return response.status(404).json({message: 'No such user'});
+            }
+
+            const item: any = await User.findOne({_id: userId, favorites: {'$elemMatch' : {itemId: itemId}}});
+
+            if(item){
+                return response.status(400).json({message: 'This item has already been recorded'})
+            }
+
+            await User.findOneAndUpdate({_id: userId},{$push: {'favorites': {itemId: itemId }}});
+            response.status(201).json({message: 'This item is successfully recorded.'});
+
+        }catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+);
+
+router.get(
+    '/:userId/favorites',
+    async (request: Request, response: Response) => {
+        try{
+            const user: any = await User.findOne({_id: request.params.userId});
+            let favorites: Array<any> = [];
+            if(user.favorites){
+                favorites = await Promise.all(user.favorites.map(async(element: {itemId: number}) => {
+                    const itemData = await getItemData(element.itemId);
+                    return{
+                        id: element.itemId,
+                        collectionName: itemData.title,
+                        title: itemData.items[0].title,
+                        url: itemData.items[0].url,
+                        price: itemData.items[0].price,
+                    };
+
+                }));
+            }
+            response.status(200).json(favorites);
+        }catch (error) {
+            response.status(500).json({message: 'Something goes wrong'});
+        }
+    }
+);
+
+router.delete(
+    '/:userId/favorites/:itemId',
+    async (request: Request, response: Response) => {
+        try{
+            const {userId, itemId} = request.params;
+
+            const data: any = await User.findOne({_id: userId, favorites: {'$elemMatch': {itemId: itemId}}});
+            if(!data){
+                return response.status(404).json({message: 'No such user or no such item in favorites'});
+            }
+
+            await User.findOneAndUpdate({_id: userId}, {'$pull' : {'favorites': {itemId: itemId}}}, {useFindAndModify: false});
+            response.status(200).json({message: 'This item is successfully removed from favorites'});
+
+        }catch (error) {
             response.status(500).json({message: 'Something goes wrong'});
         }
     }

@@ -13,6 +13,7 @@ export const templateGetHandler = (type: string) => async (request: Request, res
         if (!user) {
             return response.status(404).json({message: 'User not found'});
         }
+
         const items = await Collection.aggregate(
             [getQuery(type, userId)]
         );
@@ -22,11 +23,11 @@ export const templateGetHandler = (type: string) => async (request: Request, res
             if (element.items.length > 0) {
                 result.push(...element.items);
             }
-        })
+        });
 
         response.status(200).json(
             result
-        )
+        );
     } catch (error) {
         response.status(500).json({message: 'Something goes wrong'});
     }

@@ -47,7 +47,7 @@ const schema = new Schema({
                         required: true
                     },
                     id:{
-                        type: String,
+                        type: Number,
                         required: true
                     },
                     collectionName: {
@@ -57,9 +57,16 @@ const schema = new Schema({
                 }
             ]
         }
+    ],
+    favorites:[
+        {
+            itemId:{
+                type: Number,
+                required: true
+            },
+        }
     ]
 });
-
 
 
 export default model('User', schema);

@@ -1,33 +1,7 @@
-import {Schema, model, Document, Types} from 'mongoose';
+import {Schema, model, Types} from 'mongoose';
 
+import {CollectionInterface} from "../interfaces/interfaces";
 
-interface CollectionInterface extends Document{
-    title: string,
-    items: CollectionItemInterface[],
-};
-
-interface CollectionItemInterface extends Document{
-    id: number;
-    title: string,
-    url: string,
-    description: string,
-    price: number,
-    collectionName?: string,
-    comments: Comment[],
-    rating: Rating[]
-};
-
-interface Comment{
-    email: string,
-    createdAt: Date,
-    text: string,
-    id: Types.ObjectId
-}
-
-interface Rating{
-    userId: String,
-    value: number
-}
 
 const CollectionSchema: Schema = new Schema({
     title: {
