@@ -15,13 +15,12 @@ router.get(
                     titles: collection.map(elem => elem.title),
                     urls: collection.map(elem => elem.items[0].url)
                 } : {}
-            )
+            );
         }catch (error) {
-            response.status(500).send(error)
+            response.status(500).send(error);
         }
     }
 );
-
 
 
 export default router;

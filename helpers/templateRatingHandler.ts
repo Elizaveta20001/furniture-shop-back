@@ -1,27 +1,30 @@
 import {Request, Response} from "express";
 
 import User from "../models/User";
+import {Rating} from "../interfaces/interfaces";
 
 
 export const templateRatingHandler = (Model: any) => async (request: Request, response: Response) => {
     const {userId, value} = request.body;
+    const id = request.params.id;
     let collectionName = request.params.collectionName;
     collectionName = collectionName.charAt(0).toUpperCase() + collectionName.slice(1);
 
     try {
-        const query = {title: collectionName, items: {$elemMatch: {id: request.params.id}}};
-        const userData: any = await User.findOne({_id: request.body.userId});
+        const query = {title: collectionName, items: {$elemMatch: {id: id}}};
+        const userData: any = await User.findOne({_id: userId});
 
         if (!userData) {
             return response.status(401).json({message: 'No such user'});
         } else {
-            const data = await Model.findOne(query, {"items.$": request.params.id});
+            const data = await Model.findOne(query, {"items.$": id});
+
             const user = data.items[0].rating.filter((element: { userId: string, value: number }) => element.userId === userId);
             if (user.length !== 0) {
                 return response.status(400).json({message: 'You have already rated this product'});
             }
 
-            const newRating = {
+            const newRating: Rating = {
                 userId,
                 value,
             };

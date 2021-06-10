@@ -69,5 +69,4 @@ const schema = new Schema({
 });
 
 
-
 export default model('User', schema);

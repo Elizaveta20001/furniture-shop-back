@@ -2,10 +2,12 @@ import {Request, Response} from "express";
 import {Types} from "mongoose";
 
 import User from "../models/User";
+import {Comment} from './../interfaces/interfaces';
 
 
 export const templateCommentHandler = (Model: any) => async (request: Request, response: Response) => {
     const {text, createdAt, user} = request.body;
+
     let collectionName = request.params.collectionName;
     collectionName = collectionName.charAt(0).toUpperCase() + collectionName.slice(1);
 
@@ -15,7 +17,7 @@ export const templateCommentHandler = (Model: any) => async (request: Request, r
         if (!userData) {
             return response.status(401).json({message: 'No such user'});
         } else {
-            const newComment = {
+            const newComment: Comment = {
                 text,
                 createdAt,
                 userId: user,

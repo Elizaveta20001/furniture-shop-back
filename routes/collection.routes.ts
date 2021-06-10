@@ -13,14 +13,20 @@ router.get(
     '/:collectionName',
     templateHandler(Collection)
 );
+
+router.get(
+    '/:collectionName/user/:userId',
+    templateHandler(Collection)
+);
+
 router.get(
     '/:collectionName/:id',
     templateCollectionItemHandler(Collection)
 );
 
 router.get(
-    '/:collectionName/user/:userId',
-    templateHandler(Collection)
+    '/:collectionName/:id/user/:userId',
+    templateCollectionItemHandler(Collection)
 );
 
 router.post(
