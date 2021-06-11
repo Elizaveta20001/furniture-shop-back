@@ -1,38 +1,21 @@
 import { Router, Request, Response } from 'express';
+
 import Collection from '../models/Collection';
+import {templateSearchHandler} from "../helpers/templateSearchHandler";
+
+const auth = require('./../middlewere/auth.middleware');
 
 const router = Router();
 
 router.get(
     '/',
-    async (req: Request, res: Response) => {
-        try{
-            const {field, collectionName} = req.query;
-            let searchCondition:any;
-
-            collectionName ?
-                searchCondition = {
-                    'items.title': { "$regex": field, "$options": "i" },
-                    'title' : collectionName
-                } : searchCondition = { 'items.title': { "$regex": field, "$options": "i" } }
-
-            const resultCollection = field ? await Collection.aggregate(
-                [
-                    {"$match": searchCondition},
-                    {"$unwind": "$items"},
-                    {"$match": {'items.title': { "$regex": field, "$options": "i" }}},
-                ]) : [];
-            res.json({
-                searchResult: resultCollection.map( (item) => {
-                    let resultItem = item.items;
-                    resultItem.collectionName = item.title.toLowerCase();
-                    return resultItem;
-                } )
-            })
-        } catch(e){
-            res.status(500).json({message: 'something goes wrong'});
-        }
-    }
+    templateSearchHandler(Collection)
 );
+
+router.get(
+    '/:userId',
+    auth,
+    templateSearchHandler(Collection)
+)
 
 export default router;
