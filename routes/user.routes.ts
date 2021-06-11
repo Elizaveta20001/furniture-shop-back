@@ -6,11 +6,14 @@ import bcrypt from "bcryptjs";
 import {templateGetHandler} from "../helpers/templateGetHandler";
 import {getItemData} from "../helpers/getItemData";
 
+const auth = require('./../middlewere/auth.middleware');
+
 
 const router = Router();
 
 router.get(
     '/:userId',
+    auth,
     async (request: Request, response: Response) => {
         try {
             const userId = request.params.userId;
@@ -35,6 +38,7 @@ router.get(
 
 router.put(
     '/:userId',
+    auth,
     parser.single('image'),
     async (request: Request, response: Response) => {
         try {
@@ -70,6 +74,7 @@ router.put(
 
 router.put(
     '/password/:userId',
+    auth,
     async (request: Request, response: Response) => {
         try {
             const userId = request.params.userId;
@@ -97,16 +102,19 @@ router.put(
 
 router.get(
     '/rating/:userId',
+    auth,
     templateGetHandler('rating')
 );
 
 router.get(
     '/comments/:userId',
+    auth,
     templateGetHandler('comments')
 );
 
 router.post(
     '/:userId/order-history',
+    auth,
     async (request: Request, response: Response) => {
         try {
             const items: Array<{ id: number, quantity: number }> = request.body.items;
@@ -139,6 +147,7 @@ router.post(
 
 router.get(
     '/:userId/order-history',
+    auth,
     async (request: Request, response: Response) => {
         try {
             const user: any = await User.findOne({_id: request.params.userId});
@@ -154,6 +163,7 @@ router.get(
 
 router.post(
     '/:userId/favorites',
+    auth,
     async (request: Request, response:Response)=>{
         try{
             const userId = request.params.userId;
@@ -181,6 +191,7 @@ router.post(
 
 router.get(
     '/:userId/favorites',
+    auth,
     async (request: Request, response: Response) => {
         try{
             const user: any = await User.findOne({_id: request.params.userId});
@@ -207,6 +218,7 @@ router.get(
 
 router.delete(
     '/:userId/favorites/:itemId',
+    auth,
     async (request: Request, response: Response) => {
         try{
             const {userId, itemId} = request.params;

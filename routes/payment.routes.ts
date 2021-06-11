@@ -3,6 +3,8 @@ import {Stripe} from 'stripe';
 import {v4 as uuid4} from 'uuid';
 import config from "config";
 
+const auth = require('./../middlewere/auth.middleware');
+
 
 const router = Router();
 const stripe = new Stripe(config.get('apiKey'), {
@@ -10,7 +12,7 @@ const stripe = new Stripe(config.get('apiKey'), {
     typescript: true,
 });
 
-router.post('/', (request: Request, response: Response) => {
+router.post('/', auth,(request: Request, response: Response) => {
     const {totalPrice, token} = request.body;
     const idempotencyKey = uuid4();
 

@@ -6,6 +6,8 @@ import Collection from '../models/Collection';
 import {templateCommentHandler} from "../helpers/templateCommentHandler";
 import {templateRatingHandler} from "../helpers/templateRatingHandler";
 
+const auth = require('./../middlewere/auth.middleware');
+
 
 const router = Router();
 
@@ -16,6 +18,7 @@ router.get(
 
 router.get(
     '/:collectionName/user/:userId',
+    auth,
     templateHandler(Collection)
 );
 
@@ -26,16 +29,19 @@ router.get(
 
 router.get(
     '/:collectionName/:id/user/:userId',
+    auth,
     templateCollectionItemHandler(Collection)
 );
 
 router.post(
     '/:collectionName/comment/:id',
+    auth,
     templateCommentHandler( Collection)
 );
 
 router.post(
     '/:collectionName/rating/:id',
+    auth,
     templateRatingHandler(Collection)
 );
 
