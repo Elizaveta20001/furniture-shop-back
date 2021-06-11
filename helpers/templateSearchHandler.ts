@@ -1,7 +1,6 @@
-import e, {Request, Response} from "express";
+import  {Request, Response} from "express";
 
 import User from "../models/User";
-import {CollectionInterface} from "../interfaces/interfaces";
 
 
 export const templateSearchHandler = (Model: any) => async (request: Request, response: Response) => {
@@ -36,7 +35,7 @@ export const templateSearchHandler = (Model: any) => async (request: Request, re
 
         response.json({
             searchResult: searchResult
-        })
+        });
     } catch (e) {
         response.status(500).json({message: e.message});
     }
