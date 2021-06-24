@@ -1,4 +1,14 @@
 export const getQuery = (type: string, userId: string) => {
+    const information: { [k: string]: any } = {
+        "title": "$$items.title",
+        "url": "$$items.url",
+        "id": "$$items.id",
+        "price": "$$items.price",
+        "description": "$$items.description"
+    }
+    if(type === 'comments'){
+        information["rating"] = "$$items.rating";
+    }
     return ({
         "$addFields": {
             "items": {
@@ -17,11 +27,7 @@ export const getQuery = (type: string, userId: string) => {
                                         }
                                     }
                                 },
-                                "title": "$$items.title",
-                                "url": "$$items.url",
-                                "id": "$$items.id",
-                                "price": "$$items.price",
-                                "description": "$$items.description"
+                               ...information
                             }
                         },
                     },
